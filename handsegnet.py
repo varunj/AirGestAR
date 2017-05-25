@@ -16,8 +16,7 @@ Conv2D(nos of conv filters, (dimen of each filter/kernel), input_shape=(depth, w
 '''
 
 def doArgMax(inp):
-	argmaxedInp = K.argmax(inp, axis=0)
-	return argmaxedInp
+	return K.argmax(inp, axis=1)
 
 model = Sequential()
 model.add(Conv2D(64, (3,3), strides=(1,1), padding='same', data_format='channels_first', activation='relu', \
@@ -42,11 +41,13 @@ model.add(Conv2D(512, (3,3), strides=(1,1), activation='relu', padding='same'))	
 model.add(Conv2D(512, (3,3), strides=(1,1), activation='relu', padding='same'))		# output_shape=(512,32,32)
 model.add(Conv2D(2, (1,1), strides=(1,1), padding='same'))							# output_shape=(2,32,32)
 model.add(UpSampling2D(size=(8,8)))													# output_shape=(2,256,256)
-
-
 print model.layers[-1].output_shape
 model.add(Lambda(doArgMax, output_shape=(1,256,256)))
 print model.layers[-1].output_shape
+
+
+# model.add(ArgMaxx())																# output_shape=(1,256,256)
+# argmax on out(2*256*256) -> (1*256*256)
 
 
 model.compile(loss="mean_squared_error", optimizer="adam", metrics=['acc'])
