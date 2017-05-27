@@ -29,8 +29,44 @@ batch size = 8
 hence, epochs = 40k/(33k/8) = 10
 '''
 
-def doArgMax(inp):
+PATH_COLOR = 'data/color'
+PATH_HANDMASK = 'data/mask_hands'
+
+def ArgMaxLayer(inp):
 	return K.argmax(inp, axis=1)
+
+
+# todo
+def shuffle_data(num_samples, labels):
+	seq = np.arange(num_samples)
+	np.random.shuffle(seq)
+	temp = 0
+	for k in seq:
+	    print k , "and", temp
+	    if (temp ==0):
+		labels2 = labels[k:k+1,:]
+		temp =temp+1
+	    else:
+		labels2 = np.vstack((labels2, labels[k:k+1,:]))
+		temp = temp+1
+	
+	return labels2
+# todo
+def make_chan_first(path):
+	img=cv2.imread(path)
+	a = np.array(img[:,:,0])
+	b= np.array(img[:,:,1])
+	c= np.array(img[:,:,2])
+	a= np.reshape(a, (1,img_rows,img_cols))
+	b= np.reshape(b, (1,img_rows,img_cols))
+	c= np.reshape(c, (1,img_rows,img_cols))
+	img1 = np.append(a,b, axis=0)
+	chan_fst_img = np.append(img1, c, axis =0)
+	return chan_fst_img		
+
+
+
+
 
 model = Sequential()
 model.add(Conv2D(64, (3,3), strides=(1,1), padding='same', data_format='channels_first', activation='relu', \
@@ -55,12 +91,12 @@ model.add(Conv2D(512, (3,3), strides=(1,1), activation='relu', padding='same'))	
 model.add(Conv2D(512, (3,3), strides=(1,1), activation='relu', padding='same'))		# output_shape=(,512,32,32)
 model.add(Conv2D(2, (1,1), strides=(1,1), padding='same'))							# output_shape=(,2,32,32)
 model.add(UpSampling2D(size=(8,8)))													# output_shape=(,2,256,256)
-model.add(Lambda(doArgMax, output_shape=(1,256,256)))								# output_shape=(,1,256,256)
-
-
-
+model.add(Lambda(ArgMaxLayer, output_shape=(1,256,256)))							# output_shape=(,1,256,256)
 
 model.compile(loss="binary_crossentropy", optimizer="adam", metrics=['acc, mae'])
+
+
+
 inp = np.random.random((16, 3,256,256))
 out_grnd = np.random.random((16, 1,256,256))
 model.fit(inp, out_grnd, batch_size=8, epochs=10, verbose=1)
