@@ -16,13 +16,14 @@ from keras.models import model_from_json
 from keras.optimizers import SGD
 from keras.callbacks import ModelCheckpoint, Callback
 from keras import backend as K
+from keras.preprocessing.image import ImageDataGenerator
 
 import os, glob
 import cv2
 
 PATH_COLOR = './data/training/color/'
 PATH_HANDMASK = './data/training/mask_hands/'
-NOS_INP = 200
+NOS_INP = 4000
 EPOCHS_NO = 3
 BATCH_SIZE = 1
 
@@ -41,8 +42,8 @@ def makeChannelsSecDimen(path):
 
 def makeChannelsSecDimenGray(path):
 	img = cv2.imread(path,0)
+	img = cv2.resize(img, (256, 256))
 	img[img > 0] = 255
-	img = cv2.resize(img, (256, 256)) 
 	return img/255.0
 
 # model declaration 
@@ -99,7 +100,17 @@ for eachImgName in fileNamesArr[:NOS_INP]:
 	c = c+1
 	print 'done for image #' + str(c)
 
-model.fit(trainInpStack, trainGrndStack, batch_size=BATCH_SIZE, epochs=EPOCHS_NO, verbose=1, validation_split=0.2)
+
+datagen = ImageDataGenerator(
+    featurewise_center=True,
+    featurewise_std_normalization=True,
+    rotation_range=20,
+    horizontal_flip=True)
+datagen.fit(trainInpStack)
+
+model.fit_generator(datagen.flow(trainInpStack, trainGrndStack, batch_size=BATCH_SIZE),steps_per_epoch=len(trainInpStack) / 32, epochs=EPOCHS_NO)
+
+# model.fit(trainInpStack, trainGrndStack, batch_size=BATCH_SIZE, epochs=EPOCHS_NO, verbose=1, validation_split=0.2)
 
 model_json = model.to_json()
 with open("model0.json", "w") as json_file:

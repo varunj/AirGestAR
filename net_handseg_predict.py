@@ -22,7 +22,7 @@ import os, glob
 import cv2
 
 PATH_COLOR = './data/evaluation/color/'
-NOS_INP = 1
+NOS_INP = 10
 
 def makeChannelsSecDimen(path):
 	img = cv2.imread(path)
@@ -50,12 +50,12 @@ for eachImgName in fileNamesArr[:NOS_INP]:
 	c = c+1
 	print 'done for image #' + str(c)
 
-modelJsonFile = open('model2.json', 'r')
+modelJsonFile = open('model0.json', 'r')
 modelJson = modelJsonFile.read()
 modelJsonFile.close()
 model = model_from_json(modelJson)
 
-model.load_weights("model2.h5")
+model.load_weights("model0.h5")
 
 # evaluate loaded model on test data
 model.compile(loss="mean_squared_error", optimizer="adam", metrics=['acc', 'mae'])
@@ -65,7 +65,6 @@ print prediction.shape
 c = 0
 for x in prediction:
 	print x.shape
-	print np.amax(x[0])
-	cv2.imwrite(fileNamesArr[c].split('.')[0] + '_out.png', x[0]*255)
-	print x[0]*255
+	print np.amax(x)
+	cv2.imwrite(fileNamesArr[c].split('.')[0] + '_out.png', x*255)
 	c = c+1

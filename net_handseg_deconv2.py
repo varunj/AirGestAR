@@ -41,8 +41,8 @@ def makeChannelsSecDimen(path):
 
 def makeChannelsSecDimenGray(path):
 	img = cv2.imread(path,0)
-	img[img > 0] = 255
 	img = cv2.resize(img, (256, 256)) 
+	img[img > 0] = 255
 	return img/255.0
 
 # model declaration 
