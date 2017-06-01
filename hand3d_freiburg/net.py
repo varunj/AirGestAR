@@ -80,8 +80,7 @@ class ColorHandPose3DNetwork(object):
             # upsample to full size
             s = image.get_shape().as_list()
             scoremap_list_large = [tf.image.resize_images(x, (s[1], s[2])) for x in scoremap_list]
-
-        print scoremap_list_large[-1]
+            
         return scoremap_list_large[-1]
 
     def _inference_pose2d(self, image_crop, train=False):
