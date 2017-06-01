@@ -14,4 +14,4 @@ def viewImage(path):
 	print np.amin(img)
 	print np.amax(img)
 
-viewImage('01539_out.png')
+viewImage('aiyo.png')

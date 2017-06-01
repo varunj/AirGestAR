@@ -21,7 +21,7 @@ import os, glob
 import cv2
 
 PATH_COLOR = './data/training/color/'
-PATH_HANDMASK = './data/training/mask_hands/'
+PATH_HANDMASK = './data/training/mask/'
 NOS_INP = 4000
 EPOCHS_NO = 3
 BATCH_SIZE = 8
@@ -42,7 +42,8 @@ def makeChannelsSecDimen(path):
 def makeChannelsSecDimenGray(path):
 	img = cv2.imread(path,0)
 	img = cv2.resize(img, (256, 256)) 
-	img[img > 0] = 255
+	img[img == 1] = 0
+	img[img > 1] = 255
 	return img/255.0
 
 # model declaration 
