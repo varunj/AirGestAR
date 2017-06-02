@@ -49,30 +49,41 @@ class ColorHandPose3DNetwork(object):
 
     @staticmethod
     def _inference_detection(image, train=False):
-        """ Detects the hand in the input image by segmenting it. """
+        """ 
+            Detects the hand in the input image by segmenting it. 
+            block_id: 1-4, corresponding to layers 1-3, 4-6, 7-11, 12-15
+            layer_id: convlayer# within a block. blk1(0,1), blk2(0,1), blk3(0,1,2,3), blk4(0,1,2,3)
+            kernel: 3x3 for all
+            stride: 1x1 for all
+            chan_num: filter size
+        """
         with tf.variable_scope('HandSegNet'):
             scoremap_list = list()
             layers_per_block = [2, 2, 4, 4]
             out_chan_list = [64, 128, 256, 512]
             pool_list = [True, True, True, False]
 
-            # learn some feature representation, that describes the image content well
+            # learn some feature representation, that describes the image content well. 
+            # layer 1-15
             x = image
             for block_id, (layer_num, chan_num, pool) in enumerate(zip(layers_per_block, out_chan_list, pool_list), 1):
                 for layer_id in range(layer_num):
                     x = ops.conv_relu(x, 'conv%d_%d' % (block_id, layer_id+1), kernel_size=3, stride=1, out_chan=chan_num, trainable=train)
                 if pool:
                     x = ops.max_pool(x, 'pool%d' % block_id)
-
+            # layer 16
             x = ops.conv_relu(x, 'conv5_1', kernel_size=3, stride=1, out_chan=512, trainable=train)
+            
+            # use encoding to detect initial scoremap. 
+            # layer??
             encoding = ops.conv_relu(x, 'conv5_2', kernel_size=3, stride=1, out_chan=128, trainable=train)
-
-            # use encoding to detect initial scoremap
             x = ops.conv_relu(encoding, 'conv6_1', kernel_size=1, stride=1, out_chan=512, trainable=train)
+
+            # layer 17
             scoremap = ops.conv(x, 'conv6_2', kernel_size=1, stride=1, out_chan=2, trainable=train)
             scoremap_list.append(scoremap)
 
-            # upsample to full size
+            # upsample to full size/ uses Bilinear interpolation
             s = image.get_shape().as_list()
             scoremap_list_large = [tf.image.resize_images(x, (s[1], s[2])) for x in scoremap_list]
             
@@ -90,6 +101,7 @@ class ColorHandPose3DNetwork(object):
             x = image_crop
             for block_id, (layer_num, chan_num, pool) in enumerate(zip(layers_per_block, out_chan_list, pool_list), 1):
                 for layer_id in range(layer_num):
+                    print('---layer_id:' + str(layer_id))
                     x = ops.conv_relu(x, 'conv%d_%d' % (block_id, layer_id+1), kernel_size=3, stride=1, out_chan=chan_num, trainable=train)
                 if pool:
                     x = ops.max_pool(x, 'pool%d' % block_id)
@@ -109,10 +121,14 @@ class ColorHandPose3DNetwork(object):
             layers_per_recurrent_unit = 5
             num_recurrent_units = 2
             for pass_id in range(num_recurrent_units):
+                # layer 18, 25
                 x = tf.concat(3, [scoremap_list[-1], encoding])
                 for rec_id in range(layers_per_recurrent_unit):
+                    # layer 19-23, 26-30
                     x = ops.conv_relu(x, 'conv%d_%d' % (pass_id+6, rec_id+1), kernel_size=7, stride=1, out_chan=128, trainable=train)
+                # layer??
                 x = ops.conv_relu(x, 'conv%d_6' % (pass_id+6), kernel_size=1, stride=1, out_chan=128, trainable=train)
+                # layer 24, 31
                 scoremap = ops.conv(x, 'conv%d_7' % (pass_id+6), kernel_size=1, stride=1, out_chan=self.num_kp, trainable=train)
                 scoremap_list.append(scoremap)
 

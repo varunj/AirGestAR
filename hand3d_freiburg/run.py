@@ -68,7 +68,7 @@ if __name__ == '__main__':
 		sess.run(init_op, init_feed)
 
 	print('Now Starting!!!')
-	start_time = time.time()
+	# start_time = time.time()
 
 	# Feed image list through network
 	for img_name in image_list:
@@ -89,30 +89,30 @@ if __name__ == '__main__':
 		coord_hw_crop = detect_keypoints(np.squeeze(keypoints_scoremap_v))
 		coord_hw = trafo_coords(coord_hw_crop, center_v, scale_v, 256)
 
-		# # visualize
-		# fig = plt.figure()
-		# ax1 = fig.add_subplot(221)
-		# ax2 = fig.add_subplot(222)
-		# ax3 = fig.add_subplot(223)
-		# ax4 = fig.add_subplot(224, projection='3d')
+		# visualize
+		fig = plt.figure()
+		ax1 = fig.add_subplot(221)
+		ax2 = fig.add_subplot(222)
+		ax3 = fig.add_subplot(223)
+		ax4 = fig.add_subplot(224, projection='3d')
 
-		# ax1.imshow(image_raw)
-		# plot_hand(coord_hw, ax1)
+		ax1.imshow(image_raw)
+		plot_hand(coord_hw, ax1)
 
-		# ax2.imshow(image_crop_v)
-		# plot_hand(coord_hw_crop, ax2)
+		ax2.imshow(image_crop_v)
+		plot_hand(coord_hw_crop, ax2)
 
-		# ax3.imshow(np.argmax(hand_scoremap_v, 2))
+		ax3.imshow(np.argmax(hand_scoremap_v, 2))
 
-		# plot_hand_3d(keypoint_coord3d_v, ax4)
-		# ax4.view_init(azim=-90.0, elev=-90.0)  # aligns the 3d coord with the camera view
-		# ax4.set_xlim([-3, 3])
-		# ax4.set_ylim([-3, 1])
-		# ax4.set_zlim([-3, 3])
+		plot_hand_3d(keypoint_coord3d_v, ax4)
+		ax4.view_init(azim=-90.0, elev=-90.0)  # aligns the 3d coord with the camera view
+		ax4.set_xlim([-3, 3])
+		ax4.set_ylim([-3, 1])
+		ax4.set_zlim([-3, 3])
 
-		# fileName = img_name.split('/')[-1].split('.')[0]
-		# fig.savefig('result/' + fileName + '_out.png')
-		# print('done' + fileName)
+		fileName = img_name.split('/')[-1].split('.')[0]
+		fig.savefig('result/' + fileName + '_out.png')
+		print('done' + fileName)
 
-		# plt.close(fig)
-	print("--- %s seconds ---" % (time.time() - start_time))
+		plt.close(fig)
+	# print("--- %s seconds ---" % (time.time() - start_time))

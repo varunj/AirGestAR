@@ -30,7 +30,7 @@ import glob, os
 import time
 
 from net2d import ColorHandPose3DNetwork
-from utils import detect_keypoints, trafo_coords, plot_hand, plot_hand_3d
+from utils import detect_keypoints, trafo_coords, plot_hand
 
 if __name__ == '__main__':
 
@@ -69,13 +69,13 @@ if __name__ == '__main__':
 		sess.run(init_op, init_feed)
 
 	print('Now Starting!!!')
-	start_time = time.time()
+	# start_time = time.time()
 
 	# Feed image list through network
 	for img_name in image_list:
 		image_raw = scipy.misc.imread(img_name)
 		image_raw = scipy.misc.imresize(image_raw, (240, 320))						# input image
-		image_v = np.expand_dims((image_raw.astype('float') / 255.0) - 0.5, 0) 		# hand part from input image
+		image_v = np.expand_dims((image_raw.astype('float') / 255.0) - 0.5, 0)
 
 		hand_scoremap_v, image_crop_v, scale_v, center_v, keypoints_scoremap_v = \
 			sess.run([hand_scoremap_tf, image_crop_tf, scale_tf, center_tf, keypoints_scoremap_tf], feed_dict={image_tf: image_v})
@@ -89,26 +89,26 @@ if __name__ == '__main__':
 		coord_hw_crop = detect_keypoints(np.squeeze(keypoints_scoremap_v))			# 21x2 vector of 21 <x,y> pts in cropped
 		coord_hw = trafo_coords(coord_hw_crop, center_v, scale_v, 256)				# 21x2 vector of 21 <x,y> pts in global
 
-		# # visualize
-		# fig = plt.figure()
-		# ax1 = fig.add_subplot(221)
-		# ax2 = fig.add_subplot(222)
-		# ax3 = fig.add_subplot(223)
+		# visualize
+		fig = plt.figure()
+		ax1 = fig.add_subplot(221)
+		ax2 = fig.add_subplot(222)
+		ax3 = fig.add_subplot(223)
 
-		# # original hand + 21 pts
-		# ax1.imshow(image_raw)
-		# plot_hand(coord_hw, ax1)
+		# original hand + 21 pts
+		ax1.imshow(image_raw)
+		plot_hand(coord_hw, ax1)
 
-		# # cropped hand + 21 pts
-		# ax2.imshow(image_crop_v)
-		# plot_hand(coord_hw_crop, ax2)
+		# cropped hand + 21 pts
+		ax2.imshow(image_crop_v)
+		plot_hand(coord_hw_crop, ax2)
 
-		# # segmented hand
-		# ax3.imshow(np.argmax(hand_scoremap_v, 2))
+		# segmented hand
+		ax3.imshow(np.argmax(hand_scoremap_v, 2))
 
-		# fileName = img_name.split('/')[-1].split('.')[0]
-		# fig.savefig('result/' + fileName + '_out.png')
-		# print('done' + fileName)
+		fileName = img_name.split('/')[-1].split('.')[0]
+		fig.savefig('result/' + fileName + '_out.png')
+		print('done' + fileName)
 
-		# plt.close(fig)
-	print("--- %s seconds ---" % (time.time() - start_time))
+		plt.close(fig)
+	# print("--- %s seconds ---" % (time.time() - start_time))
