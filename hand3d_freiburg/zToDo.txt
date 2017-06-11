@@ -1,1 +1,3 @@
 download weights from https://lmb.informatik.uni-freiburg.de/projects/hand3d/ColorHandPose3D_data.zip
+
+ffmpeg -i vid4.mp4 -r 8 vid4_%d.png

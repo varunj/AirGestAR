@@ -107,7 +107,7 @@ if __name__ == '__main__':
 		ax3.imshow(np.argmax(hand_scoremap_v, 2))
 
 		fileName = img_name.split('/')[-1].split('.')[0]
-		fig.savefig('result/' + fileName + '_out.png')
+		fig.savefig('result/' + fileName.split('_')[0] + '_out_' + fileName.split('_')[1] + '.png')
 		print('done' + fileName)
 
 		plt.close(fig)

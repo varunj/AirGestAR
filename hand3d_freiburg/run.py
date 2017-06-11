@@ -35,10 +35,10 @@ if __name__ == '__main__':
 
 	# images to be shown
 	image_list = list()
-	os.chdir("./data")
+	os.chdir("./data/vid4")
 	for file in glob.glob("*.png"):
-		image_list.append('data/' + file)
-	os.chdir("../")
+		image_list.append('data/vid4/' + file)
+	os.chdir("../../")
 
 	# network input
 	image_tf = tf.placeholder(tf.float32, shape=(1, 240, 320, 3))
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 		sess.run(init_op, init_feed)
 
 	print('Now Starting!!!')
-	# start_time = time.time()
+	start_time = time.time()
 
 	# Feed image list through network
 	for img_name in image_list:
@@ -110,9 +110,18 @@ if __name__ == '__main__':
 		ax4.set_ylim([-3, 1])
 		ax4.set_zlim([-3, 3])
 
+
 		fileName = img_name.split('/')[-1].split('.')[0]
-		fig.savefig('result/' + fileName + '_out.png')
-		print('done' + fileName)
+		fig.savefig('result/' + fileName.split('_')[0] + '_out_' + fileName.split('_')[1] + '.png')
+
+		f1 = open('result/' + fileName.split('_')[0] + '_out_2d.txt', 'ab')
+		np.savetxt(f1, coord_hw, delimiter=' ', newline='\n')
+		f1.close()
+		f1 = open('result/' + fileName.split('_')[0] + '_out_3d.txt', 'ab')
+		np.savetxt(f1, keypoint_coord3d_v, delimiter=' ', newline='\n')
+		f1.close()
+
+		print('done: ' + fileName)
 
 		plt.close(fig)
-	# print("--- %s seconds ---" % (time.time() - start_time))
+	print("--- %s seconds ---" % (time.time() - start_time))
