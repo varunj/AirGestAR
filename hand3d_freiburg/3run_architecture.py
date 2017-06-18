@@ -12,7 +12,7 @@ import time
 from net import ColorHandPose3DNetwork
 from utils import detect_keypoints, trafo_coords, plot_hand, plot_hand_3d
 
-PATHH = "train_zoom_imgs"
+PATHH = "train_zoom_imgs_2"
 
 if __name__ == '__main__':
 
@@ -98,12 +98,12 @@ if __name__ == '__main__':
 
 
 		fileName = img_name.split('/')[-1].split('.')[0]
-		fig.savefig('./data/train_zoom_result/' + '_'.join(fileName.split('_')[:-1]) + '_out_' + fileName.split('_')[-1] + '.png')
+		fig.savefig('./data/train_zoom_result_2/' + '_'.join(fileName.split('_')[:-1]) + '_out_' + fileName.split('_')[-1] + '.png')
 
 		dic_2d[img_name] = coord_hw
 		dic_3d[img_name] = keypoint_coord3d_v
-		pickle.dump(dic_2d, open( "./result_dics/dic_zoom_2d.pickle", "wb" ) )
-		pickle.dump(dic_3d, open( "./result_dics/dic_zoom_3d.pickle", "wb" ) )
+		pickle.dump(dic_2d, open( "./result_dics/dic_zoom_2_2d.pickle", "wb" ) )
+		pickle.dump(dic_3d, open( "./result_dics/dic_zoom_2_3d.pickle", "wb" ) )
 		
 		print('done: ' + str(c))
 		c = c + 1

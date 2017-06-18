@@ -10,24 +10,26 @@ np.set_printoptions(threshold=np.nan)
 '''
 print dics
 '''
-# for fileName in glob.glob("./result_dics/*2d*_100.pickle"):
+# FILENAME = 'dic_zoom_2_2d_100'
+# print(FILENAME)
+# for fileName in glob.glob("./result_dics/" + FILENAME + ".pickle"):
 # 	dic = pickle.load(open(fileName, "rb" ))
 # 	for x,y in dic.items():
 # 		print(x, y.shape)
-	# pprint.pprint(dic)
+# 	# pprint.pprint(dic)
 
 '''
 show histogram of len of gestures from dic
 '''
-# for fileName in glob.glob("./result_dics/*2d*.pickle"):
+# for fileName in glob.glob("./result_dics/dic_bloomclick_2d.pickle"):
 # 	dic = pickle.load(open(fileName, "rb" ))
 # 	dicHist = {}
 # 	for gestureNames in dic.keys():
-# 		gestureNameSmall = gestureNames.split('_')[-3] + gestureNames.split('_')[-2]
-# 		if not gestureNameSmall in dicHist:
-# 			dicHist[gestureNameSmall] = 1
+# 		gestureNames = gestureNames.split('_')[-3] + gestureNames.split('_')[-2]
+# 		if not gestureNames in dicHist:
+# 			dicHist[gestureNames] = 1
 # 		else:
-# 			dicHist[gestureNameSmall] += 1			
+# 			dicHist[gestureNames] += 1			
 # pprint.pprint(dicHist)
 # pprint.pprint(len(dicHist))
 
@@ -58,21 +60,21 @@ resample to 100/gesture instance
 # 	toReturn = np.append(toReturn, inpList[x:,:,:], axis=0)
 # 	return toReturn
 
-# for fileName in glob.glob("./result_dics/*2d*.pickle"):
+# for fileName in glob.glob("./result_dics/dic_bloomclick_2_2d.pickle"):
 # 	dic = pickle.load(open(fileName, "rb" ))
 # 	dicGesture = {}
 
-# 	gestureCount = [str(x) for x in range(1,26)]
+# 	gestureCount = [str(x) for x in range(26,101)]
 # 	gestureSeq = [str(x) for x in range(1,200)]
 # 	gesture = ['bloom', 'click']
 # 	for ges in gesture:
 # 		for gesC in gestureCount:
 # 			for gesS in gestureSeq:
-# 				if ('data/train_bloomclick_imgs/train_' + ges + '_' + gesC + '_' + gesS + '.png' in dic.keys()):
+# 				if ('data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png' in dic.keys()):
 # 					if (ges+gesC not in dicGesture):
-# 						dicGesture[ges+gesC] = [dic['data/train_bloomclick_imgs/train_' + ges + '_' + gesC + '_' + gesS + '.png']]
+# 						dicGesture[ges+gesC] = [dic['data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png']]
 # 					else:
-# 						dicGesture[ges+gesC].append(dic['data/train_bloomclick_imgs/train_' + ges + '_' + gesC + '_' + gesS + '.png'])
+# 						dicGesture[ges+gesC].append(dic['data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png'])
 # # print len of seqs
 # for x,y in dicGesture.items():
 # 	print(x, len(y))
@@ -106,5 +108,5 @@ resample to 100/gesture instance
 # for x,y in dicGesture.items():
 # 	print(x, len(y))
 
-# for fileName in glob.glob("./result_dics/*2d*.pickle"):
-# 	pickle.dump(dicGesture, open(fileName + '_resampled', "wb" ) )
+# for fileName in glob.glob("./result_dics/dic_bloomclick_2_2d.pickle"):
+# 	pickle.dump(dicGesture, open(fileName + '_100', "wb" ) )

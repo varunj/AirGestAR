@@ -1,7 +1,7 @@
 # place all vids data/train_bloomclick_videos. make folder data/train_bloomclick_imgs
 import glob, os
 import subprocess
-PATHHIN = 'data/train_zoom_videos'
+PATHHIN = 'data/videos_zoom'
 PATHHOUT = 'data/train_zoom_imgs'
 FRAMES = 60
 
