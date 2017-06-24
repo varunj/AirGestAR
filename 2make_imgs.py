@@ -1,8 +1,8 @@
 # place all vids data/train_bloomclick_videos. make folder data/train_bloomclick_imgs
 import glob, os
 import subprocess
-PATHHIN = 'data/videos_zoom'
-PATHHOUT = 'data/train_zoom_imgs'
+PATHHIN = 'data/yolo'
+PATHHOUT = 'data/yolo'
 FRAMES = 60
 
 # at 30 fps

@@ -12,7 +12,7 @@ import time
 from net import ColorHandPose3DNetwork
 from utils import detect_keypoints, trafo_coords, plot_hand, plot_hand_3d
 
-PATHH = "train_zoom_imgs_2"
+PATHH = "yolo"
 
 if __name__ == '__main__':
 
@@ -77,33 +77,34 @@ if __name__ == '__main__':
 
 		# visualize
 		fig = plt.figure()
-		ax1 = fig.add_subplot(221)
-		ax2 = fig.add_subplot(222)
-		ax3 = fig.add_subplot(223)
-		ax4 = fig.add_subplot(224, projection='3d')
+		plt.axis('off')
+		# ax1 = fig.add_subplot(221)
+		ax2 = fig.add_subplot(111)
+		# ax3 = fig.add_subplot(223)
+		# ax4 = fig.add_subplot(224, projection='3d')
 
-		ax1.imshow(image_raw)
-		plot_hand(coord_hw, ax1)
+		# ax1.imshow(image_raw)
+		# plot_hand(coord_hw, ax1)
 
 		ax2.imshow(image_crop_v)
-		plot_hand(coord_hw_crop, ax2)
+		plot_hand(coord_hw_crop, ax2, linewidth='4')
 
-		ax3.imshow(np.argmax(hand_scoremap_v, 2))
+		# ax3.imshow(np.argmax(hand_scoremap_v, 2))
 
-		plot_hand_3d(keypoint_coord3d_v, ax4)
-		ax4.view_init(azim=-90.0, elev=-90.0)  # aligns the 3d coord with the camera view
-		ax4.set_xlim([-3, 3])
-		ax4.set_ylim([-3, 1])
-		ax4.set_zlim([-3, 3])
+		# plot_hand_3d(keypoint_coord3d_v, ax4)
+		# ax4.view_init(azim=-90.0, elev=-90.0)  # aligns the 3d coord with the camera view
+		# ax4.set_xlim([-3, 3])
+		# ax4.set_ylim([-3, 1])
+		# ax4.set_zlim([-3, 3])
 
 
 		fileName = img_name.split('/')[-1].split('.')[0]
-		fig.savefig('./data/train_zoom_result_2/' + '_'.join(fileName.split('_')[:-1]) + '_out_' + fileName.split('_')[-1] + '.png')
+		fig.savefig('./data/yolo_result/' + '_'.join(fileName.split('_')[:-1]) + '_out_' + fileName.split('_')[-1] + '.png', dpi=300, bbox_inches='tight', pad_inches = 0)
 
 		dic_2d[img_name] = coord_hw
 		dic_3d[img_name] = keypoint_coord3d_v
-		pickle.dump(dic_2d, open( "./result_dics/dic_zoom_2_2d.pickle", "wb" ) )
-		pickle.dump(dic_3d, open( "./result_dics/dic_zoom_2_3d.pickle", "wb" ) )
+		# pickle.dump(dic_2d, open( "./result_dics/dic_zoom_2_2d.pickle", "wb" ) )
+		# pickle.dump(dic_3d, open( "./result_dics/dic_zoom_2_3d.pickle", "wb" ) )
 		
 		print('done: ' + str(c))
 		c = c + 1
