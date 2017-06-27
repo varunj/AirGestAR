@@ -21,7 +21,7 @@ print dics
 '''
 show histogram of len of gestures from dic
 '''
-# for fileName in glob.glob("./result_dics/dic_bloomclick_2d.pickle"):
+# for fileName in glob.glob("./result_dics/dic_train_1_2d_100.pickle"):
 # 	dic = pickle.load(open(fileName, "rb" ))
 # 	dicHist = {}
 # 	for gestureNames in dic.keys():
@@ -60,21 +60,21 @@ resample to 100/gesture instance
 # 	toReturn = np.append(toReturn, inpList[x:,:,:], axis=0)
 # 	return toReturn
 
-# for fileName in glob.glob("./result_dics/dic_bloomclick_2_2d.pickle"):
+# for fileName in glob.glob("./result_dics/dic_train_1_2d.pickle"):
 # 	dic = pickle.load(open(fileName, "rb" ))
 # 	dicGesture = {}
 
-# 	gestureCount = [str(x) for x in range(26,101)]
+# 	gestureCount = [str(x) for x in range(0,101)]
 # 	gestureSeq = [str(x) for x in range(1,200)]
-# 	gesture = ['bloom', 'click']
+# 	gesture = ['bloom', 'click', 'zooin', 'zoout']
 # 	for ges in gesture:
 # 		for gesC in gestureCount:
 # 			for gesS in gestureSeq:
-# 				if ('data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png' in dic.keys()):
+# 				if ('data/zimgs/train_' + ges + '_' + gesC + '_' + gesS + '.png' in dic.keys()):
 # 					if (ges+gesC not in dicGesture):
-# 						dicGesture[ges+gesC] = [dic['data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png']]
+# 						dicGesture[ges+gesC] = [dic['data/zimgs/train_' + ges + '_' + gesC + '_' + gesS + '.png']]
 # 					else:
-# 						dicGesture[ges+gesC].append(dic['data/train_bloomclick_imgs_2/train_' + ges + '_' + gesC + '_' + gesS + '.png'])
+# 						dicGesture[ges+gesC].append(dic['data/zimgs/train_' + ges + '_' + gesC + '_' + gesS + '.png'])
 # # print len of seqs
 # for x,y in dicGesture.items():
 # 	print(x, len(y))
@@ -108,5 +108,5 @@ resample to 100/gesture instance
 # for x,y in dicGesture.items():
 # 	print(x, len(y))
 
-# for fileName in glob.glob("./result_dics/dic_bloomclick_2_2d.pickle"):
+# for fileName in glob.glob("./result_dics/dic_train_1_2d.pickle"):
 # 	pickle.dump(dicGesture, open(fileName + '_100', "wb" ) )

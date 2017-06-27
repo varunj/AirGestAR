@@ -2,7 +2,7 @@
 import glob, os
 import subprocess
 PATHHIN = 'data/videos_test'
-PATHHOUT = 'data/zimgs'
+PATHHOUT = 'data/imgs'
 FRAMES = 60
 
 # at 30 fps
