@@ -8,10 +8,10 @@ zooin 50: 6,60,130
 zoout 30: 20,38_42,135
 
 # Repositories
-https://github.com/varunj/TCS_AirGestAR
+Codebase: https://github.com/varunj/TCS_AirGestAR
 
-https://github.com/varunj/AirGestAR
+Public Dataset: https://github.com/varunj/AirGestAR
 
-https://github.com/varunj/TCS_AirGestAR_App
+Android App: https://github.com/varunj/TCS_AirGestAR_App
 
-http://varunj.github.io/airgestar
+Project Website: http://varunj.github.io/airgestar
