@@ -38,49 +38,49 @@ targetSeq = []
 
 dic = pickle.load(open("./result_dics/dic_bloomclick_2d_100.pickle", "rb" ))
 for x,y in dic.items():
-	y = y.reshape(100, 42)
-	y = np.transpose(y)
-	y = y.reshape(1, 42, 100)
+	y = y.reshape(1, 100, 42)
+	# y = np.transpose(y)
+	# y = y.reshape(1, 42, 100)
 	dataSeq.append(y)
 	targetarr = np.zeros(NOS_CLASSES)
 	for i in range(0, NOS_CLASSES):
 		if (CLASSES[i]==x[:5]):
 			targetarr[i] = 1
 	targetSeq.append(targetarr)
-# dic = pickle.load(open("./result_dics/dic_bloomclick_2_2d_100.pickle", "rb" ))
-# for x,y in dic.items():
-# 	y = y.reshape(100, 42)
-# 	y = np.transpose(y)
-# 	y = y.reshape(1, 42, 100)
-# 	dataSeq.append(y)
-# 	targetarr = np.zeros(NOS_CLASSES)
-# 	for i in range(0, NOS_CLASSES):
-# 		if (CLASSES[i]==x[:5]):
-# 			targetarr[i] = 1
-# 	targetSeq.append(targetarr)
+dic = pickle.load(open("./result_dics/dic_bloomclick_2_2d_100.pickle", "rb" ))
+for x,y in dic.items():
+	y = y.reshape(1, 100, 42)
+	# y = np.transpose(y)
+	# y = y.reshape(1, 42, 100)
+	dataSeq.append(y)
+	targetarr = np.zeros(NOS_CLASSES)
+	for i in range(0, NOS_CLASSES):
+		if (CLASSES[i]==x[:5]):
+			targetarr[i] = 1
+	targetSeq.append(targetarr)
 
 dic = pickle.load(open("./result_dics/dic_zoom_2d_100.pickle", "rb" ))
 for x,y in dic.items():
-	y = y.reshape(100, 42)
-	y = np.transpose(y)
-	y = y.reshape(1, 42, 100)
+	y = y.reshape(1, 100, 42)
+	# y = np.transpose(y)
+	# y = y.reshape(1, 42, 100)
 	dataSeq.append(y)
 	targetarr = np.zeros(NOS_CLASSES)
 	for i in range(0, NOS_CLASSES):
 		if (CLASSES[i]==x[:5]):
 			targetarr[i] = 1
 	targetSeq.append(targetarr)
-# dic = pickle.load(open("./result_dics/dic_zoom_2_2d_100.pickle", "rb" ))
-# for x,y in dic.items():
-# 	y = y.reshape(100, 42)
-# 	y = np.transpose(y)
-# 	y = y.reshape(1, 42, 100)
-# 	dataSeq.append(y)
-# 	targetarr = np.zeros(NOS_CLASSES)
-# 	for i in range(0, NOS_CLASSES):
-# 		if (CLASSES[i]==x[:5]):
-# 			targetarr[i] = 1
-# 	targetSeq.append(targetarr)
+dic = pickle.load(open("./result_dics/dic_zoom_2_2d_100.pickle", "rb" ))
+for x,y in dic.items():
+	y = y.reshape(1, 100, 42)
+	# y = np.transpose(y)
+	# y = y.reshape(1, 42, 100)
+	dataSeq.append(y)
+	targetarr = np.zeros(NOS_CLASSES)
+	for i in range(0, NOS_CLASSES):
+		if (CLASSES[i]==x[:5]):
+			targetarr[i] = 1
+	targetSeq.append(targetarr)
 
 print(len(dataSeq))
 seq = np.arange(len(dataSeq))
@@ -94,29 +94,30 @@ print(data.shape)
 print(target.shape)
 
 model = Sequential()  
-model.add(LSTM(200, input_shape=(42,100), return_sequences=True))
+model.add(LSTM(20, input_dim=42,input_length=100, return_sequences=True))
 model.add(Flatten())
 model.add(Dense(NOS_CLASSES, activation='softmax'))
 
 # sgd = optimizers.SGD(lr=0.01, clipvalue=0.5)
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 # print(model.summary())
-history = model.fit(data, target, epochs=300, batch_size=10, verbose=2, validation_split=0.10)
+history = model.fit(data, target, epochs=90, batch_size=10, verbose=2, validation_split=0.10)
 
-# model.save('my_model.h5')
-# model.save_weights('my_model_weights.h5')
-# plt.plot(history.history['acc'])
-# plt.plot(history.history['val_acc'])
-# plt.ylabel('accuracy')
-# plt.xlabel('epoch')
-# plt.legend(['train', 'test'], loc='upper left')
-# plt.savefig('accuracy.png',  format='png')
-# plt.plot(history.history['loss'])
-# plt.plot(history.history['val_loss'])
-# plt.ylabel('loss')
-# plt.xlabel('epoch')
-# plt.legend(['train', 'test'], loc='upper left')
-# plt.savefig('loss.svg',  format='svg')
+model.save('my_model_corr.h5')
+model.save_weights('my_model_weights_corr.h5')
+plt.plot(history.history['acc'])
+plt.plot(history.history['val_acc'])
+plt.ylabel('accuracy')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('accuracy.png',  format='png')
+plt.close()
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.ylabel('loss')
+plt.xlabel('epoch')
+plt.legend(['train', 'test'], loc='upper left')
+plt.savefig('loss.png',  format='png')
 
 
 

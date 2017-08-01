@@ -1,14 +1,13 @@
 import numpy as np
 np.random.seed(123)
+np.set_printoptions(threshold=np.nan)
 import glob, os
 import pandas as pd
 from scipy.spatial.distance import euclidean
 from keras.layers.core import Dropout, Activation, Flatten
-import matplotlib.pyplot as plt
 from math import sqrt
 from pprint import pprint
 import pdb
-np.set_printoptions(threshold=np.nan)
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
@@ -24,17 +23,17 @@ CLASSES = ('bloom','click','zooin','zoout')
 NOS_CLASSES = len(CLASSES)
 
 
-model = load_model('../lstm_models/my_model.h5')
-model.load_weights('../lstm_models/my_model_weights.h5')
+model = load_model('../lstm_models/my_model_corr3.h5')
+model.load_weights('../lstm_models/my_model_weights_corr3.h5')
 
 dataSeq = []
 targetSeq = []
 
 dic = pickle.load(open("../result_dics/dic_train_1_2d_100.pickle", "rb" ))
 for x,y in dic.items():
-	y = y.reshape(100, 42)
-	y = np.transpose(y)
-	y = y.reshape(1, 42, 100)
+	y = y.reshape(1, 100, 42)
+	# y = np.transpose(y)
+	# y = y.reshape(1, 42, 100)
 	dataSeq.append(y)
 	targetarr = np.zeros(NOS_CLASSES)
 	for i in range(0, NOS_CLASSES):
@@ -58,5 +57,5 @@ for eachData in data:
 	c = c + 1
 
 print(dic)
-with open('result.pickle', 'wb') as handle:
+with open('result_corr.pickle', 'wb') as handle:
 	pickle.dump(dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
