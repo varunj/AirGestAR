@@ -23,8 +23,8 @@ CLASSES = ('bloom','click','zooin','zoout')
 NOS_CLASSES = len(CLASSES)
 
 
-model = load_model('../lstm_models/my_model_corr3.h5')
-model.load_weights('../lstm_models/my_model_weights_corr3.h5')
+model = load_model('../lstm_models/my_model1.h5')
+model.load_weights('../lstm_models/my_model_weights1.h5')
 
 dataSeq = []
 targetSeq = []
@@ -51,11 +51,11 @@ print(target.shape)
 c = 0
 dic = {}
 for eachData in data:
-	eachData = eachData.reshape(1, 42, 100)
+	eachData = eachData.reshape(1, 100, 42)
 	result = model.predict(eachData)
 	dic[c+1] = [CLASSES[np.argmax(target[c])], CLASSES[np.argmax(result)], target[c], result[0]]
 	c = c + 1
 
 print(dic)
-with open('result_corr.pickle', 'wb') as handle:
+with open('result.pickle', 'wb') as handle:
 	pickle.dump(dic, handle, protocol=pickle.HIGHEST_PROTOCOL)
